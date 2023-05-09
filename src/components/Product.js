@@ -1,16 +1,34 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import React from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
+import { useDispatch, useSelector } from "react-redux";
+import { add } from "./store/cartSlice";
+import { getProducts } from "./store/productSlice";
+import { uid } from "uid";
 
 export default function Product() {
-  const [products, getProducts] = useState([]);
+  const dispatch = useDispatch();
+  const { data: products, status } = useSelector((state) => state.products);
+
   useEffect(() => {
-    fetch("https://fakestoreapi.com/products")
-      .then((res) => res.json())
-      .then((json) => getProducts(json));
+    // fetch("https://fakestoreapi.com/products")
+    //.then((res) => res.json())
+    //.then((json) => getProducts(json));
+    dispatch(getProducts());
   }, []);
+
+  if (status === "loading") {
+    return <div>Loading...</div>;
+  }
+
+  if (status === "failed") {
+    return <div>Failed to load data</div>;
+  }
+
+  const addToCard = (product) => {
+    dispatch(add(product));
+  };
 
   const cards = products.map((product) => (
     <div className="col-md-3" style={{ marginBottom: "10px" }}>
@@ -19,7 +37,7 @@ export default function Product() {
           <Card.Img
             variant="top"
             src={product.image}
-            style={{ width: "100px", height: "auto" }}
+            style={{ width: "100px", height: "auto", marginTop: "10px" }}
           />
         </div>
         <Card.Body>
@@ -28,7 +46,9 @@ export default function Product() {
           <Card.Text>{product.price}€</Card.Text>
         </Card.Body>
         <Card.Footer>
-          <Button variant="primary">Add to cart</Button>
+          <Button variant="primary" onClick={() => addToCard(product)}>
+            Add to cart
+          </Button>
         </Card.Footer>
       </Card>
     </div>
@@ -36,7 +56,9 @@ export default function Product() {
 
   return (
     <>
-      <div className="row">{cards}</div>
+      <div className="row" key={uid}>
+        {cards}
+      </div>
     </>
   );
 }
