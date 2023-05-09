@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
+import React from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
 
-const Product = () => {
+export default function Product() {
   const [products, getProducts] = useState([]);
   useEffect(() => {
     fetch("https://fakestoreapi.com/products")
@@ -37,6 +39,4 @@ const Product = () => {
       <div className="row">{cards}</div>
     </>
   );
-};
-
-export default Product;
+}

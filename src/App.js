@@ -1,6 +1,6 @@
+import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
-import Product from "./components/Product";
 import {
   createBrowserRouter,
   createRoutesFromElements,

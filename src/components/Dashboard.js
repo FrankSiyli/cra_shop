@@ -1,11 +1,10 @@
 import Product from "./Product";
+import React from "react";
 
-const Dashboard = () => {
+export default function Dashboard() {
   return (
     <>
       <Product />
     </>
   );
-};
-
-export default Dashboard;
+}
